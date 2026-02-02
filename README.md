@@ -23,7 +23,7 @@ The repository is organized as follows:
 
 During the original project implementation, the web interface was deployed using Firebase hosting to support live demonstrations and result visualization. The current repository preserves the core inference pipeline, deployment scripts, and system components, while active web hosting is not maintained.
 
-The Raspberry Pi deployment script (`RPI5.py`) was used to handle real-time inference on edge hardware, allowing the system to operate without reliance on high-end computing resources.
+The Raspberry Pi deployment script (`rpi5.py`) was used to handle real-time inference on edge hardware, allowing the system to operate without reliance on high-end computing resources.
 
 Testing was conducted using UAV-captured and ground-level grape leaf images under semi-controlled outdoor conditions to evaluate detection performance and system stability.
 
