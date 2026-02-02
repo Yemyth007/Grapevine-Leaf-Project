@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grapevine Monitoring</title>
+    <style>
+      body {
+          font-family: "Roboto", sans-serif;
+          margin: 0;
+          background: #f4f4f4; /* Light gray background */
+          display: flex; /* From your old styles */
+          justify-content: center; /* From your old styles */
+          align-items: center; /* From your old styles */
+          min-height: 100vh; /* From your old styles */
+          color: #333; /* Dark gray text */
+      }
+
+      .container {
+          background: #fff; /* White background for content */
+          padding: 40px; /* From your old styles */
+          border-radius: 10px; 
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          text-align: center;
+      }
+
+      h1, h2 {
+          text-align: center;
+      }
+
+      ul {
+          list-style: none; 
+          padding: 0;
+      }
+
+      li {
+          background: #e0f7fa; /* From your old styles */
+          padding: 15px; /* From your old styles */
+          margin: 10px 0; /* From your old styles */
+          border-radius: 5px; 
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* From your old styles */
+          transition: transform 0.2s, box-shadow 0.2s; /* From your old styles */
+          cursor: pointer; /* From your old styles */
+      }
+
+      li:hover {
+          transform: translateY(-3px); /* From your old styles */
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* From your old styles */
+      }
+
+      .disease-info {
+          margin-top: 20px; /* Add space above disease info */
+      }
+
+      .disease-info p {
+          text-align: justify; 
+      }
+
+      .disease-info h3 {
+          margin-top: 30px; 
+      }
+
+      .disease-info ul {
+          padding-left: 20px; 
+      }
+
+      .modal {
+          display: none;
+          position: fixed;
+          z-index: 1;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.4);
+      }
+
+      .modal-content {
+          background-color: #fefefe;
+          margin: 15% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+          max-width: 600px;
+          border-radius: 10px; 
+          box-shadow:
+              0 2px 4px rgba(0, 0, 0, 0.1), 
+              0 8px 16px rgba(0, 0, 0, 0.2); 
+      }
+
+      .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+      }
+
+      .close:hover, .close:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+      }
+
+      .modal-content img {
+          max-width: 100%;
+          height: auto;
+          margin-bottom: 10px;
+          border-radius: 5px; 
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .external-link {
+          color: #007bff; 
+          text-decoration: none;
+      }
+
+      .external-link:hover {
+          text-decoration: underline;
+      }
+
+      .back-to-home {
+          display: block;
+          margin-top: 30px;
+          text-align: center;
+          text-decoration: none;
+          color: #4CAF50; 
+          font-weight: bold;
+      }
+    </style>
+
+
+</head>
+<body>
+    <div class="container">
+        <h1>Grapevine Leaf Conditions</h1>
+
+        <ul>
+            <li id="blackRot" onclick="openModal('blackRotModal')">Black Rot</li>
+            <li id="blackMeasles" onclick="openModal('blackMeaslesModal')">Black Measles</li>
+            <li id="leafBlight" onclick="openModal('leafBlightModal')">Leaf Blight</li>
+            <li id="healthy" onclick="openModal('healthyModal')">Healthy</li>
+        </ul>
+
+        <a href="/" class="back-to-home">Back to Home</a>
+    </div>
+
+    <div id="blackRotModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('blackRotModal')">&times;</span>
+            <h2>Black Rot</h2>
+            <a href="https://extension.sdstate.edu/black-rot-downy-mildew-two-diseases-can-rot-grapes" target="_blank">
+                <img src="{{ url_for('static', filename='images/BlackRot.jpg') }}" alt="Black Rot">
+            </a>
+            <div class="disease-info">
+                <p>
+                    Black Rot is a fungal disease caused by <i>Guignardia bidwellii</i> that affects grapevine leaves. Symptoms include small, dark, circular spots on the leaves that gradually enlarge and turn brown with a black border. The centers of these spots often dry out and may crack. Black Rot can significantly reduce grape yield and quality if not managed promptly.
+                </p>
+
+                <h3>Expert's advice:</h3>
+                <ul>
+                    <li>Choose resistant varieties: Some grape varieties are more resistant to black rot than others. Consult with your local nursery or agricultural extension service to find out which varieties are best suited for your area. </li>
+                    <li>Practice good sanitation: Remove and destroy any infected leaves, berries, or canes as soon as they are spotted. This will help to prevent the spread of the fungus.   </li>
+                    <li>Apply fungicides: Fungicides can be effective in preventing black rot, but they should be used as part of an integrated pest management program. Be sure to follow the label instructions carefully.   </li>
+                    <li>Manage canopy growth: Proper canopy management can help to improve air circulation and reduce humidity, which can create conditions that are less favorable for the growth of the fungus.   </li>
+                    <li>Scout regularly: Monitor your grapevines regularly for signs of black rot. Early detection is key to preventing the disease from spreading. </li>
+                </ul>
+
+                <p>
+                    For more information, you can refer to these resources:
+                </p>
+                <ul>
+                    <li><a href="https://extension.sdstate.edu/black-rot-downy-mildew-two-diseases-can-rot-grapes" target="_blank" class="external-link">Black Rot and Downy Mildew</a></li>
+                    <li><a href="https://ohioline.osu.edu/factsheet/plpath-fru-24#:~:text=Black%20rot%20is%20one%20of,by%20the%20fungus%20Guignardia%20bidwellii." target="_blank" class="external-link">Black Rot of Grapes</a></li>
+                    <li><a href="https://fruit.wisc.edu/2016/05/02/reducing-disease-pressure-through-vineyard-sanitation/" target="_blank" class="external-link">Reducing Disease Pressure Through Vineyard Sanitation</a></li>
+                    <li><a href="https://extension.okstate.edu/fact-sheets/black-rot-of-grapes.html#:~:text=Certain%20fungicides%20are%20effective%20for,are%20developing%20and%20spraying%20is  " target="_blank" class="external-link">Black Rot of Grapes - Oklahoma State University</a></li>
+                    <li><a href="https://www.canr.msu.edu/news/maximizing-grapevine-canopy-potential-optimizing-pre-bloom-shoot-thinning-and-positioning#:~:text=By%20reducing%20humidity%20levels%20and,unfavorable%20environment%20for%20disease%20development." target="_blank" class="external-link">Maximizing Grapevine Canopy Potential</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="blackMeaslesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('blackMeaslesModal')">&times;</span>
+            <h2>Black Measles</h2>
+            <a href="https://ipm.ucanr.edu/agriculture/grape/esca-black-measles/#gsc.tab=0" target="_blank">
+                <img src="{{ url_for('static', filename='images/BlackMeasle.png') }}" alt="Black Measles">
+            </a>
+            <div class="disease-info">
+                <p>
+                    Black Measles, also known as Esca, is a complex fungal disease caused by several pathogens, including <i>Phaeoacremonium aleophilum</i> and <i>Phaeomoniella chlamydospora</i>. Infected leaves exhibit interveinal chlorosis, where the tissue between the veins turns yellow while the veins remain green. This is followed by the development of necrotic spots or streaks, giving the leaves a scorched appearance. The disease can lead to vine decline and death if severe. 
+                </p>
+
+                <h3>Expert's advice:</h3>
+                <ul>
+                    <li>Choose resistant varieties: Some grape varieties are more resistant to esca than others. Consult with your local nursery or agricultural extension service for recommendations.   </li>
+                    <li>Practice good sanitation: Remove and destroy any infected leaves, berries, or canes as soon as they are spotted. Prune out dead wood and disinfect pruning tools between cuts.</li>
+                    <li>Protect pruning wounds: Apply a wound sealant to pruning cuts to prevent fungal spores from entering the vine.   </li>
+                    <li>Manage canopy growth: Proper canopy management can help to improve air circulation and reduce humidity, which can create conditions that are less favorable for fungal growth.   </li>
+                    <li>Scout regularly: Monitor your grapevines regularly for signs of esca. Early detection is key to preventing the disease from spreading.</li>
+                </ul>
+
+                <h3>Additional tips for black measles prevention:</h3>
+                <ul>
+                    <li>Avoid over-fertilization: Excess nitrogen can make grapevines more susceptible to esca.</li>
+                    <li>Water properly: Avoid overwatering or underwatering, as both can stress the vines and make them more susceptible to disease.</li>
+                    <li>Consider fungicide treatments: While there are no fungicides specifically labeled for esca, some fungicides used for other grapevine diseases may offer some protection. Consult with a viticulture expert for recommendations.</li>
+                </ul>
+
+                <p>
+                    <strong>Important Note:</strong> Black measles is a chronic disease and there is no cure. Prevention is the best strategy for managing this disease.
+                </p>
+
+                <p>
+                    For more information, you can refer to this resource:
+                </p>
+                <ul>
+                    <li><a href="https://plantvillage.psu.edu/topics/grape/infos/diseases_and_pests_description_uses_propagation#!:~:text=Protect%20the%20prune%20wounds%20to,essential%20oil%20or%20suitable%20fungicides." target="_blank" class="external-link">Protect the prune wounds to</a></li>
+                    <li><a href="https://www.canr.msu.edu/news/maximizing-grapevine-canopy-potential-optimizing-pre-bloom-shoot-thinning-and-positioning#:~:text=Disease%20prevention.,is%20crucial%20for%20disease%20prevention." target="_blank" class="external-link">Maximizing Grapevine Canopy Potential</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="leafBlightModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('leafBlightModal')">&times;</span>
+            <h2>Leaf Blight</h2>
+            <a href="https://www.invasive.org/collections/viewcollection.cfm?ser=72222" target="_blank">
+                <img src="{{ url_for('static', filename='images/Leaf Blight.jpg') }}" alt="Leaf Blight">
+            </a>
+            <div class="disease-info">
+                <p>
+                    Leaf Blight in grapevines, often caused by <i>Pseudocercospora vitis</i>, presents as irregular, water-soaked lesions on the leaves. These lesions eventually turn brown or black and may be surrounded by a yellow halo. Severely affected leaves can become deformed and drop prematurely. Leaf Blight can weaken the vine by reducing the photosynthetic area, leading to lower fruit production and quality.
+                </p>
+
+                <h3>Expert's advice:</h3>
+                <ul>
+                    <li>Choose resistant varieties: Some grape varieties are more resistant to leaf blight than others. Consult with your local nursery or agricultural extension service for recommendations.</li>
+                    <li>Practice good sanitation: Remove and destroy any infected leaves as soon as they are spotted. Rake up fallen leaves and remove them from the vineyard.   </li>
+                    <li>Manage canopy growth: Proper canopy management, including pruning and thinning, can improve air circulation and reduce humidity, making conditions less favorable for fungal growth.   </li>
+                    <li>Apply fungicides: Fungicide applications can be effective in preventing and managing leaf blight. Consult with a viticulture expert to determine the appropriate fungicide and timing of applications for your specific situation.   </li>
+                    <li>Water management: Avoid overhead irrigation, as wet leaves create conditions that favor fungal growth. Use drip irrigation or water early in the day to allow leaves to dry before nightfall.</li>
+                    <li>Fertilizer management: Avoid excessive nitrogen fertilization, as it can promote lush growth that is more susceptible to leaf blight.</li>
+                </ul>
+
+                <p>
+                    <strong>Remember</strong>, early detection and prompt action are key to managing leaf blight. Regular scouting of the vineyard will help you identify problems early on and take appropriate measures to prevent further spread.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="healthyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('healthyModal')">&times;</span>
+            <h2>Healthy Leaves</h2>
+            <a href="https://erasmusu.com/en/erasmus-blog/erasmus-recipes/warak-arish-stuffed-grape-leaves-the-healthy-comfort-food-536749" target="_blank">
+                <img src="{{ url_for('static', filename='images/Healthy.jpg') }}" alt="Healthy Leaves">
+            </a>
+            <div class="disease-info">
+                <p>
+                    Healthy grapevine leaves are vibrant green, free from spots, lesions, or discoloration. They have a smooth texture and show no signs of wilting, curling, or abnormal growth patterns. Healthy leaves are essential for optimal photosynthesis, supporting the vine's growth, fruit development, and overall vitality. Maintaining healthy leaves involves proper vineyard management, including adequate irrigation, nutrient supply, and disease control practices.
+                </p>
+
+                <p>
+                    To maintain healthy grapevines and prevent diseases, it is essential to follow a holistic approach that combines several key practices:
+                </p>
+
+                <ul>
+                    <li>Choose appropriate varieties: Select grape varieties well-suited to your climate and soil conditions. Some varieties are naturally more resistant to specific diseases than others.</li>
+                    <li>Start with healthy planting material: Obtain certified disease-free vines from reputable nurseries. This minimizes the risk of introducing diseases into your vineyard.</li>
+                    <li>Prepare the soil properly: Ensure the soil has good drainage and adequate fertility. Conduct soil tests to determine any nutrient deficiencies and amend the soil accordingly.</li>
+                    <li>Plant vines correctly: Follow proper spacing guidelines to allow for good air circulation and sunlight penetration. This helps prevent the buildup of humidity, which can favor disease development.</li>
+                    <li>Implement a balanced fertilization program: Provide essential nutrients based on soil test results and vine requirements. Avoid over-fertilization, especially with nitrogen, as it can promote excessive growth and make vines more susceptible to diseases.</li>
+                    <li>Manage water wisely: Provide adequate water, especially during dry periods, but avoid overwatering. Proper irrigation practices help maintain vine health and vigor.</li>
+                    <li>Prune regularly: Prune vines during dormancy to remove dead or diseased wood, improve air circulation, and control vine size.</li>
+                    <li>Monitor regularly: Scout for pests and diseases regularly. Early detection allows for prompt action and prevents the spread of problems.</li>
+                    <li>Practice integrated pest management (IPM): IPM combines various strategies, including cultural practices, biological controls, and judicious use of pesticides, to manage pests and diseases effectively.</li>
+                    <li>Maintain good sanitation: Remove and destroy infected plant material promptly. Disinfect pruning tools to avoid spreading pathogens.</li>
+                    <li>Consider cover crops: Planting cover crops between vine rows can improve soil health, reduce erosion, and suppress weeds, which can harbor pests and diseases.</li>
+                    <li>Seek expert advice: Consult with local agricultural extension services or viticulture experts for specific recommendations tailored to your region and grape varieties.</li>
+                </ul>
+
+                <p>
+                    By following these comprehensive practices, you can promote healthy grapevines and minimize the risk of diseases, leading to a more productive and sustainable vineyard.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // Event listeners for list items
+        document.getElementById("blackRot").addEventListener("click", function() {
+            openModal("blackRotModal");
+        });
+
+        document.getElementById("blackMeasles").addEventListener("click", function() {
+            openModal("blackMeaslesModal");
+        });
+
+        document.getElementById("leafBlight").addEventListener("click", function() {
+            openModal("leafBlightModal");
+        });
+
+        document.getElementById("healthy").addEventListener("click", function() {
+            openModal("healthyModal");
+        });
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</body>
+</html>

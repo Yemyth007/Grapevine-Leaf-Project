@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Latest Object Counts</title>
+    <style>
+    body {
+      font-family: "Roboto", sans-serif;
+      margin: 0;
+      background: #f4f4f4; /* Subtle background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #e0f7fa; /* Light blue */
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s; /* Hover effect */
+    }
+
+    li:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+
+    .back-link { /* Style for the "Back to Home" link */
+      display: block;
+      margin-top: 30px;
+      color: #007bff;             /* Blue link color */
+      text-decoration: none;
+      font-weight: bold;
+      text-align: center;       /* Center the link */
+      transition: transform 0.2s; /* Add a subtle hover transition */
+    }
+
+    .back-link:hover {
+      transform: translateY(-2px); /* Move link up slightly on hover */
+    }
+  </style>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+        // Firebase Configuration (Replace with your actual configuration from firebase_configs.py)
+        const firebaseConfig = {
+              apiKey: "AIzaSyColI5B68lg3BStswcixWfMcuoyTNLNRTs",
+              authDomain: "grapevineleaf-disease.firebaseapp.com",
+              databaseURL: "https://grapevineleaf-disease-default-rtdb.asia-southeast1.firebasedatabase.app",
+              projectId: "grapevineleaf-disease",
+              storageBucket: "grapevineleaf-disease.appspot.com",
+              messagingSenderId: "71036418978",
+              appId: "1:71036418978:web:bb0661fe8f27a21bf8d0fb",
+              measurementId: "G-58WHRS032G"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const totalCountsRef = database.ref('total_counts');
+
+        // Event Listener for Counts Updates
+        totalCountsRef.on('value', (snapshot) => {
+            const counts = snapshot.val() || {}; // Handle null counts
+            updateCountsDisplay(counts);
+        });
+
+        function updateCountsDisplay(counts) {
+            const countsList = document.querySelector('ul');
+            countsList.innerHTML = ''; // Clear previous list items
+
+            for (const diseaseName in counts) {
+                const count = counts[diseaseName];
+                const listItem = document.createElement('li');
+                listItem.textContent = `${diseaseName}: ${count}`;
+                countsList.appendChild(listItem);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Latest Object Counts</h1>
+        <ul>
+            {% for disease_name, count in counts.items() %}
+                <li>{{ disease_name }}: {{ count }}</li>
+            {% endfor %}
+        </ul>
+        <a href="/" style="text-decoration: none; color: #4CAF50; font-weight: bold;">Back to Home</a>
+    </div>
+</body>
+</html>

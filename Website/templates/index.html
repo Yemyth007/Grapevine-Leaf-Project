@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grapevine Monitoring</title>
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+      margin: 0;
+      background: #f0f2f5; /* Subtle gradient background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    #time-container {
+      font-size: 36px;
+      margin-bottom: 30px;
+      font-weight: bold;
+      color: #4CAF50; /* Green */
+    }
+
+    .links a {
+      display: inline-block;
+      padding: 15px 25px;
+      margin: 10px;
+      background-color: #e0f7fa; /* Light blue */
+      color: #333;
+      text-decoration: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .links a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBSSmcNwbAUJouPKtzAAFQMfqLkaL-2S7k",
+      authDomain: "gui-interface-6bb81.firebaseapp.com",
+      databaseURL: "https://gui-interface-6bb81-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "gui-interface-6bb81",
+      storageBucket: "gui-interface-6bb81.appspot.com",
+      messagingSenderId: "478946237117",
+      appId: "1:478946237117:web:b83e04f45bb78494d9f5d4",
+      measurementId: "G-E01CMM1VSY"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    // Get a reference to your Firebase database and the 'timer' node
+    const database = firebase.database();
+    const timerRef = database.ref('timer');
+
+    // Function to update the timer display
+    function updateTimerDisplay(timerValue) {
+      const timeContainer = document.getElementById('time-container');
+
+      const totalSeconds = timerValue;
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+      timeContainer.textContent = formattedTime;
+    }
+
+    // Listen for changes in the 'timer' node
+    timerRef.on('value', (snapshot) => {
+      const timerValue = snapshot.val();
+      updateTimerDisplay(timerValue);
+    });
+
+    // Initial fetch of the timer value when the page loads
+    updateTimerDisplay();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Grapevine Monitoring Dashboard</h1>
+    <p class="time">Run Time:</p>
+    <div id="time-container">Loading time...</div>
+    <div class="links">
+      <a href="/GUI">Control System Dashboard</a>
+      <a href="/object-counts">View Object Count Detections</a>
+      <a href="/display">View Detections</a>
+      <a href="/information">Information</a>
+    </div>
+  </div>
+</body>
+</html>

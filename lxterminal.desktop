@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=true
+Name=Grapeleaf GUI
+Exec=lxterminal --working-directory=/home/grapeleaf/Downloads/GUI/ -e /home/grapeleaf/Downloads/GUI/autorun.sh
+Icon=utilities-terminal
+X-KeepTerminal=true

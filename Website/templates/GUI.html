@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Control System Dashboard</title>
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+      margin: 0;
+      background: #f0f2f5; /* Subtle gradient background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 20px 10px; /* Space between buttons */
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .green {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .red {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .button:hover {
+      box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 30px;
+      color: #007bff; /* Blue link color */
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+  // Firebase Configuration (Replace with your actual values)
+ const firebaseConfig = {
+              apiKey: "AIzaSyBSSmcNwbAUJouPKtzAAFQMfqLkaL-2S7k",
+              authDomain: "gui-interface-6bb81.firebaseapp.com",
+              databaseURL: "https://gui-interface-6bb81-default-rtdb.asia-southeast1.firebasedatabase.app",
+              projectId: "gui-interface-6bb81",
+              storageBucket: "gui-interface-6bb81.appspot.com",
+              messagingSenderId: "478946237117",
+              appId: "1:478946237117:web:b83e04f45bb78494d9f5d4",
+              measurementId: "G-E01CMM1VSY"
+ };
+
+ firebase.initializeApp(firebaseConfig);
+ const database = firebase.database();
+
+    function loadDetection() {
+      fetch('/load_detection', {method:'POST'})
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response from your Flask route if needed
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function terminateProgram() {
+      fetch('/terminate', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    // Function to update button color and text
+    function updateLoadDetectionButton(status) {
+      const button = document.querySelector('.button.load_detection');
+      if (status === 1) {
+        button.classList.add('green');
+        button.classList.remove('red');
+        button.textContent = "Load Detection (Active)";
+      } else {
+        button.classList.add('red');
+        button.classList.remove('green');
+        button.textContent = "Load Detection (Inactive)";
+      }
+    }
+
+    function updateTerminateButton(status) {
+      const button = document.querySelector('.button.terminate');
+      if (status === 1) {
+        button.classList.add('green');
+        button.classList.remove('red');
+        button.textContent = "Terminate Program";
+      } else {
+        button.classList.add('red');
+        button.classList.remove('green');
+        button.textContent = "Terminate Program";
+      }
+    }
+
+    // Add event listener to database reference
+    const loadDetectionRef = database.ref('load_detection');
+    loadDetectionRef.on('value', (snapshot) => {
+      const loadDetectionStatus = snapshot.val();
+      updateLoadDetectionButton(loadDetectionStatus);
+    });
+
+    // Add event listener to database reference
+    const terminateProgramRef = database.ref('terminate');
+    terminateProgramRef.on('value', (snapshot) => {
+      const terminateProgramStatus = snapshot.val();
+      updateTerminateButton(terminateProgramStatus);
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Control System Dashboard</h1>
+    <button class="button load_detection" onclick="loadDetection()">Load Detection</button>
+    <button class="button terminate" onclick="terminateProgram()">Terminate Program</button>
+    <a href="/" style="text-decoration: none; color: #4CAF50; font-weight: bold;">Back to Home</a>
+  </div>
+</body>
+</html>

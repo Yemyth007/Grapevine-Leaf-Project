@@ -1,0 +1,25 @@
+conda create -n camera_test python=3.9
+conda activate camera_test
+pip install opencv-python 
+
+sudo apt-get install cmake 
+
+conda create -n grapeleaf python=3.11
+conda activate grapeleaf
+
+pip install opencv-python 
+pip install ultralytics
+pip install onnx onnxruntime 
+pip install -U --force-reinstall flatbuffers==23.5.26
+
+pip install picamera2
+sudo cp -r /usr/lib/python3/dist-packages/libcamera ~/miniconda3/envs/grapeleaf/lib/python3.11/site-packages/
+sudo cp -r /usr/lib/python3/dist-packages/pykms ~/miniconda3/envs/grapeleaf/lib/python3.11/site-packages/
+
+cd ~/miniconda3/envs/grapeleaf/lib
+mv -vf libstdc++.so.6 libstdc++.so.6.old
+ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 ./libstdc++.so.6
+
+conda install pyqt
+pip uninstall opencv-python
+pip install opencv-python-headless

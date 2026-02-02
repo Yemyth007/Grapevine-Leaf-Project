@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grapevine Monitoring</title>
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 900px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .timestamp-header {
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #e0f7fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .back-link { /* Style for the "Back to Home" link */
+            display: block;
+            margin-top: 30px;
+            color: #007bff; 
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center; 
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+
+        img.hidden {
+            display: none;
+        }
+
+        .info-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none; /* Initially hide the link */
+        }
+
+        li.show-info .info-link { /* Show the link when .show-info class is present */
+            display: block;
+        }
+
+        .disease-info a {
+            color: #007bff; /* Blue color */
+            text-decoration: underline; /* Add an underline */
+            font-weight: bold; 
+            transition: color 0.2s; /* Smooth color transition on hover */
+        }
+
+        .disease-info a:hover {
+            color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>   
+
+    <script>   
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyColI5B68lg3BStswcixWfMcuoyTNLNRTs",
+            authDomain: "grapevineleaf-disease.firebaseapp.com",
+            databaseURL: "https://grapevineleaf-disease-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "grapevineleaf-disease",
+            storageBucket: "grapevineleaf-disease.appspot.com",
+            messagingSenderId: "71036418978",
+            appId: "1:71036418978:web:bb0661fe8f27a21bf8d0fb",
+            measurementId: "G-58WHRS032G"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function fetchImages() {
+            const detectionsRef = database.ref('Detections');
+
+            detectionsRef.orderByKey().limitToLast(100).on('value', (snapshot) => {
+                const imageContainer = document.getElementById('imageContainer');
+                imageContainer.innerHTML = ''; 
+
+                if (snapshot.exists()) {
+                    const dateSnapshots = [];
+                    snapshot.forEach(dateSnapshot => {
+                        dateSnapshots.unshift(dateSnapshot); 
+                    });
+
+                    dateSnapshots.forEach(dateSnapshot => {
+                        const dateHeader = document.createElement('h2');
+                        dateHeader.classList.add('timestamp-header');
+                        dateHeader.textContent = dateSnapshot.key; 
+                        imageContainer.appendChild(dateHeader);
+
+                        const imageList = document.createElement('ul');
+                        imageContainer.appendChild(imageList);
+
+                        dateSnapshot.forEach(categorySnapshot => {
+                            const diseaseLabelText = categorySnapshot.key;
+
+                            categorySnapshot.forEach(imageSnapshot => {
+                                if (imageSnapshot.val() !== null) {
+                                    const imageUrl = imageSnapshot.val().image_url;
+                                    const formattedTime = formatTimestamp(imageSnapshot.val().time, diseaseLabelText);
+
+                                    const listItem = document.createElement('li');
+                                    const imageContainer = document.createElement('div');
+                                   
+                                    const imgElement = document.createElement('img');
+                                    imgElement.src = imageUrl;
+                                    imgElement.alt = "Grapevine Leaf Image";
+                                    imgElement.style.maxWidth = "100%";
+                                    imgElement.style.height = "auto";
+                                    imgElement.classList.add('hidden');
+
+                                    const dateParagraph = document.createElement('p');
+                                    dateParagraph.textContent = formattedTime; 
+                                    imageContainer.appendChild(dateParagraph);
+                                    imageContainer.appendChild(imgElement);
+
+                                    // Add information based on the disease label
+                                    let diseaseInfo = null;
+                                    if (diseaseLabelText === "Black-Rot") {
+                                        diseaseInfo = document.createElement('p');
+                                        diseaseInfo.classList.add('disease-info');
+                                        diseaseInfo.innerHTML = "Black Rot is a fungal disease caused by <i>Guignardia bidwellii</i> that affects grapevine leaves. Symptoms include small, dark, circular spots on the leaves that gradually enlarge and turn brown with a black border. For more information <a href='information'>click here</a>.";
+                                    } else if (diseaseLabelText === "Black-Measles") {
+                                        diseaseInfo = document.createElement('p');
+                                        diseaseInfo.classList.add('disease-info'); 
+                                        diseaseInfo.innerHTML = "Black Measles, also known as Esca, is a complex fungal disease caused by several pathogens, including <i>Phaeoacremonium aleophilum</i> and <i>Phaeomoniella chlamydospora</i>. For more information <a href='information'>click here</a>.";
+                                    } else if (diseaseLabelText === "Leaf-Blight") {
+                                        diseaseInfo = document.createElement('p');
+                                        diseaseInfo.classList.add('disease-info');
+                                        diseaseInfo.innerHTML = "Leaf Blight in grapevines, often caused by <i>Pseudocercospora vitis</i>, presents as irregular, water-soaked lesions on the leaves. For more information <a href='information.html'>click here</a>.";
+                                    } else if (diseaseLabelText === "Healthy") {
+                                        diseaseInfo = document.createElement('p');
+                                        diseaseInfo.classList.add('disease-info');
+                                        diseaseInfo.innerHTML = "Healthy grapevine leaves are vibrant green, free from spots, lesions, or discoloration. For more information <a href='information.html'>click here</a>.";
+                                    }
+
+                                    if (diseaseInfo) {
+                                        diseaseInfo.style.display = 'none'; // Initially hide the info
+
+                                        // Toggle both the image and the information section
+                                        imageContainer.onclick = () => {
+                                            toggleImage(imgElement);
+                                            toggleInfo(diseaseInfo); 
+                                        };
+
+                                        listItem.appendChild(diseaseInfo); // Append info to the list item
+                                    }
+
+                                    listItem.appendChild(imageContainer);
+                                    imageList.appendChild(listItem);
+                                }
+                            });
+                        });
+                    });
+                } else {
+                    const noDataMessage = document.createElement('p');
+                    noDataMessage.textContent = "No image data found.";
+                    imageContainer.appendChild(noDataMessage);
+                }
+            }, (error) => {
+                console.error("Error fetching images: ", error);
+            });
+        }
+
+        function toggleImage(imgElement) {
+            imgElement.classList.toggle('hidden');
+        }
+
+        function toggleInfo(infoElement) {
+            infoElement.style.display = (infoElement.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function formatTimestamp(timestamp, diseaseLabelText) {
+            const date = new Date(timestamp);
+            const formattedTime = date.toLocaleString();
+            return `${diseaseLabelText}: ${formattedTime}`; 
+        }
+
+        fetchImages();
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Grapevine Leaves Diseases Detections</h1>
+        <div class="image-container" id="imageContainer"></div>
+        <a href="/" class="back-link">Back to Home</a> 
+    </div>
+</body>
+</html>
